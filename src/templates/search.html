@@ -1,0 +1,37 @@
+<div>
+	<form ng-submit="submitSearch()">
+		<div class="input-group input-group">
+			<input type="text" class="form-control input" placeholder="search" ng-model="model.query"></input>
+			<span class="input-group-btn">
+				<!--
+				<div class="btn-group" role="group">
+				    
+				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				      Relevance
+				      <span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu">
+				      <li><a ng-click="setSort('rating')">Rating</a></li>
+				      <li><a ng-click="setSort('location')">Location</a></li>
+				    </ul>
+				  </div>
+					-->
+				<button class="btn btn-default btn" type="submit">Search</button>
+			</span>
+		</div>
+		<input type="checkbox" ng-model="model.useLocation">Use my location</input>
+	</form>
+
+	<!-- search results -->
+	<div id="search-results" class="panel">
+		<div class="text-center" ng-show="model.totalResults > 0">
+			{{totalResults}} results.
+		</div>
+		<ul>
+			<li ng-repeat="video in model.results">
+				<div data-video-item video="video">
+					<div class="btn btn-default btn-sm" ng-click="addToWatchLater(video)">Watch Later</div>
+			</li>
+		</ul>
+	</div>
+</div>

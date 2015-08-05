@@ -1,0 +1,16 @@
+/** bootstrap overrides & app theme */
+body {
+	padding:10px;
+}
+
+ul {
+	-webkit-padding-start:0px;
+}
+
+li {
+	list-style-type: none;
+}
+
+.thumbnail {
+	width:113px;
+}

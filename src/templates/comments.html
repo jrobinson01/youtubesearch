@@ -1,0 +1,13 @@
+<h4 ng-click="toggleComments()">Comments</h4>
+<div class="comments-list" ng-show="model.showComments" >
+	<div class="top-comment" ng-repeat="comment in model.results" >
+		<h5>{{comment.snippet.topLevelComment.snippet.authorDisplayName}}</h5>
+		{{comment.snippet.topLevelComment.snippet.textDisplay}}
+		<div class="replies">
+			<div class="reply" ng-repeat="reply in comment.replies.comments">
+				<h5>{{reply.snippet.authorDisplayName}}</h5>
+				{{reply.snippet.textDisplay}}
+			</div>
+		</div>
+	</div>
+</div>

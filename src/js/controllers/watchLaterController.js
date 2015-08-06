@@ -11,10 +11,10 @@ angular.module("app").controller("watchLaterController", ["$scope","$rootScope",
 			return;
 		}
 
-		$scope.listFavorites();
+		$scope.listWatchLater();
 	});
 
-	$scope.listFavorites = function() {
+	$scope.listWatchLater = function() {
 		var options = {
 			part:"snippet,contentDetails",
 			mine:true
@@ -23,6 +23,12 @@ angular.module("app").controller("watchLaterController", ["$scope","$rootScope",
 		var request = gapi.client.youtube.channels.list(options);
 		
 		request.execute(function(response){
+			
+			if(response.error != undefined){
+				$rootScope.$emit("apiError", response.error);
+				return;
+			}
+
 			console.log("channels.list response:", response);
 			//first get watchLater id
 			$scope.watchLaterId = response.items[0].contentDetails.relatedPlaylists.watchLater;
@@ -35,8 +41,15 @@ angular.module("app").controller("watchLaterController", ["$scope","$rootScope",
 			var request = gapi.client.youtube.playlistItems.list(options);
 			request.execute(function(response){
 				console.log("watchLater playlist response!", response);
-				$scope.watchLater = response.items;
-				$scope.$digest();//force a dom update
+				if(response.error != undefined){
+					$rootScope.$emit("apiError", response.error);
+					return;
+				}
+				
+				$scope.$apply(function(){
+					$scope.watchLater = response.items;
+				});
+				
 			});
 		});
 	};
@@ -61,8 +74,12 @@ angular.module("app").controller("watchLaterController", ["$scope","$rootScope",
 		var request = gapi.client.youtube.playlistItems.insert(options);
 		request.execute(function(response){
 			console.log("addWatchLater response:", response);
-			//refresh favorites
-			$scope.listFavorites();
+			if(response.error != undefined){
+				$rootScope.$emit("apiError", response.error);
+				return;
+			}
+			//refresh watchLater
+			$scope.listWatchLater();
 		});
 
 	};
@@ -70,17 +87,18 @@ angular.module("app").controller("watchLaterController", ["$scope","$rootScope",
 	//remove a video from watch later list
 	$scope.removeWatchLater = function(video){
 		//
+		console.log("removeWatchLater:", video);
+		
 		var options = {
-			part:"snippet",
-			playlistId:$scope.watchLaterId,
-			resourceId:{
-				kind:"youtube#video",
-				videoId:video.id.videoId//must be playlistItem_id not videoId
-			}
+			id:video.id
 		};
 		var request = gapi.client.youtube.playlistItems.delete(options);
 		request.execute(function(response){
-			
+			if(response.error != undefined){
+				$rootScope.$emit("apiError", response.error);
+				return;
+			}
+			$scope.listWatchLater();
 		})
 		
 	};

@@ -1,5 +1,7 @@
-<div class="well">
-	<a href="javascript:;" ng-click="playVideo(video)"><img class="thumbnail" ng-src='{{video.snippet.thumbnails.default.url}}'/><h4>{{video.snippet.title}}</h4></a>
+<div class="well video-item">
+	<a href="javascript:;" ng-click="playVideo(video)"><img class="thumbnail" ng-src='{{video.snippet.thumbnails.default.url}}'/>
+		<h5>{{video.snippet.title}}</h5>
+	</a>
 	<p>{{video.snippet.description}}</p>
 	<p>by <strong>{{video.snippet.channelTitle}}</strong> on: {{getDate()}}</p>
 	<div ng-transclude></div>

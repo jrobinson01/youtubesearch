@@ -6,6 +6,7 @@ angular.module("app").controller("authController", ["$rootScope", function($root
 	// you need to register your own client ID.
 		
 	var OAUTH2_CLIENT_ID = '169813148487-v1o1o75glkf4c25f175hq3lca137vmse.apps.googleusercontent.com';
+	
 	var OAUTH2_SCOPES = [
 	  'https://www.googleapis.com/auth/youtube'
 	];
@@ -19,8 +20,8 @@ angular.module("app").controller("authController", ["$rootScope", function($root
 	// Upon loading, the Google APIs JS client automatically invokes this callback.
 	// JR: automatically as in, if we tell it to below or supply it as a url param.
 	googleApiClientReady = function() {
+	  gapi.client.setApiKey(API_KEY);
 	  gapi.auth.init(function() {
-	  	gapi.client.setApiKey(API_KEY);
 	    setTimeout(checkAuth, 1);
 	  });
 	};

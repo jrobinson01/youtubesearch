@@ -1,11 +1,9 @@
-<div class="row">
+<div class="row" ng-show="model.favorites.length > 0">
 	<!-- Favorites list -->
 	<h4>Favorites</h4>
-	<ul>
-		<li ng-repeat="video in favorites">
-			<div data-video-item video="video">
-				<div class="btn btn-danger btn-sm" ng-click="removeFavorite(video)">Remove</div>
-			</div>
-		<li>
-	</ul>
+	<div ng-repeat="video in model.favorites">
+		<div data-video-item video="video">
+			<div class="btn btn-danger btn-sm" ng-click="removeFavorite(video)">Remove</div>
+		</div>
+	<div>
 </div>

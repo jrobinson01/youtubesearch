@@ -11,6 +11,53 @@ li {
 	list-style-type: none;
 }
 
+#video-player {
+	margin:10px;
+}
 .thumbnail {
 	width:113px;
+}
+/* styles for favorites and watchLater video-item */
+#favorites .video-item p,
+#watchLater .video-item p {
+	font-size:10px;
+}
+
+#favorites .video-item .thumbnail,
+#watchLater .video-item .thumbnail {
+	width:64px;
+}
+
+#favorites .video-item h5,
+#watchLater .video-item h5 {
+	font-size:12px !important;
+}
+
+/* fix  select wrapping */
+.form-group label {
+    float: left;
+    text-align: left;
+    font-weight: normal;
+}
+
+.form-group select {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+
+.form-group{ 
+	margin-top:5px;
+}
+
+/** comments */
+.top-comment {
+	border:1px solid gray;
+	padding:10px;
+	border-radius:4px;
+	background-color:#DFDFDF;
+	margin-bottom:5px;
+}
+.replies {
+	margin-left:22px;
 }

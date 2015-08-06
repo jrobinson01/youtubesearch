@@ -3,35 +3,39 @@
 		<div class="input-group input-group">
 			<input type="text" class="form-control input" placeholder="search" ng-model="model.query"></input>
 			<span class="input-group-btn">
-				<!--
-				<div class="btn-group" role="group">
-				    
-				    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				      Relevance
-				      <span class="caret"></span>
-				    </button>
-				    <ul class="dropdown-menu">
-				      <li><a ng-click="setSort('rating')">Rating</a></li>
-				      <li><a ng-click="setSort('location')">Location</a></li>
-				    </ul>
-				  </div>
-					-->
 				<button class="btn btn-default btn" type="submit">Search</button>
 			</span>
 		</div>
-		<input type="checkbox" ng-model="model.useLocation">Use my location</input>
+		<div class="form-group">
+			<label class="checkbox-inline">
+				<input type="checkbox" ng-model="model.useLocation" ng-change="toggleLocation()">Use my location</input>
+			</label>
+			<div class="pull-right">
+				<label for="select-sort">Sort by:
+					<select class="form-control"  id="select-sort" ng-model="model.sort" ng-change="sortChange()">
+						<option value="relevance">relevance</option>
+						<option value="rating">rating</option>
+						<option value="date">date</option>
+						<option value="date">title</option>
+						<option value="date">viewCount</option>
+					</select>
+				</label>
+			</div>
+		</div>
 	</form>
-
+	
+	<!-- player -->
+	<div id="video-player" class="col-md-12" ng-include="'src/templates/player.html'" ng-controller="playerController" ng-show="currentVideo!=null"></div>
+	
 	<!-- search results -->
 	<div id="search-results" class="panel">
 		<div class="text-center" ng-show="model.totalResults > 0">
-			{{totalResults}} results.
+			displaying {{model.results.length}} of {{model.totalResults}} results.
 		</div>
-		<ul>
-			<li ng-repeat="video in model.results">
+			<div ng-repeat="video in model.results">
 				<div data-video-item video="video">
 					<div class="btn btn-default btn-sm" ng-click="addToWatchLater(video)">Watch Later</div>
-			</li>
-		</ul>
+				</div>
+			</div>
 	</div>
 </div>

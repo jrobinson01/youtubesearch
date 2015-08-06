@@ -3,15 +3,15 @@ angular.module("app").controller("playerController", ["$scope", "$rootScope", fu
 	$scope.currentVideo = null;
 	$scope.player = null;
 
+	
 	$rootScope.$on("playVideo", function(event, video){
 		//force scroll to top
 		window.scrollTo(0, 0);
-
-		console.log("player got event:", event, video);
-
 		$scope.currentVideo = video;
-		//need to extract the videoId here instead of sending the entire video
+
+		//videoId is in different places when videos come from search results vs playlist
 		var videoId = null;
+		
 		//video is from search results
 		if(video.id.videoId != undefined){
 			videoId = video.id.videoId;
@@ -43,7 +43,8 @@ angular.module("app").controller("playerController", ["$scope", "$rootScope", fu
 		}
 		
 	});
-
+	
+	//relay addFavorites event
 	$scope.addToFavorites = function() {
 		console.log("player addToFavorites", $scope.currentVideo);
 		$rootScope.$emit("addFavorite", $scope.currentVideo);

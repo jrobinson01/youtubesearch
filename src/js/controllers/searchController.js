@@ -1,5 +1,4 @@
 angular.module("app").controller("searchController", ["$scope","$rootScope", function($scope, $rootScope){
-	console.log("search $scope:", $scope);
 	
 	$scope.model = {
 		results:[],
@@ -8,7 +7,8 @@ angular.module("app").controller("searchController", ["$scope","$rootScope", fun
 		nextToken:null,
 		prevToken:null,
 		sort:"relevance",
-		useLocation:false
+		useLocation:false,
+		rawResponse:null
 	}
 
 	//handle clicking search
@@ -19,30 +19,62 @@ angular.module("app").controller("searchController", ["$scope","$rootScope", fun
 			//initiate search!
 			var options = {
 				part:"snippet",
-				maxResults:5,
-				q:$scope.model.query
-			}
-			/*
+				maxResults:25,
+				q:$scope.model.query,
+				type:"video",
+				order:$scope.model.sort
+			};
+
+			var runQuery = function() {
+				console.log("running query:", options);
+				var request = gapi.client.youtube.search.list(options);
+				request.execute(function(response){
+					console.log("search response:", response);
+					if(response.error != undefined){
+						$rootScope.$emit("apiError", response.error);
+						return;
+					}
+					$scope.$apply(function(){
+						$scope.model.results = response.items;
+						$scope.model.totalResults = response.pageInfo.totalResults;
+						$scope.model.nextToken = response.nextPageToken;
+						$scope.model.prevToken = response.previousPageToken;
+						$scope.model.rawResponse = response;
+					});
+				});
+			};
+
 			if($scope.model.useLocation) {
+				//wait for geolocation callback
 				options.locationRadius = "50mi";
-				options.location="";//get from geoapi!
+				//options.location="";//get from geoapi!
+				navigator.geolocation.getCurrentPosition(function(position){
+					options.location = String(position.coords.latitude)+","+String(position.coords.longitude);
+					console.log("position:", position.coords);
+					runQuery();
+				});
+			} else {
+				//no need to wait for geolocation callback, run it now!
+				runQuery();
 			}
-			*/
-			var request = gapi.client.youtube.search.list(options);
-			request.execute(function(response){
-				console.log("search response:", response.items);
-				$scope.model.results = response.items;
-				$scope.model.totalResults = response.pageInfo.totalResults;
-				$scope.model.nextToken = response.nextPageToken;
-				$scope.model.prevToken = response.previousPageToken;
-				//JR: force a digest cycle to update dom
-				$scope.$digest();
-			})
+			
+			
 		}
 	};
 
 	$scope.toggleLocation = function(){
-		$scope.model.useLocation = !$scope.model.useLocation;
+		if($scope.model.rawResponse != null) {
+			//re-run the search
+			$scope.submitSearch();
+		}
+	};
+
+	$scope.sortChange = function() {
+		console.log("sortChange:", $scope.model.sort);
+		if($scope.model.rawResponse != null) {
+			//re-run the search
+			$scope.submitSearch();
+		}
 	};
 
 	$scope.setSort = function(val) {

@@ -4,6 +4,9 @@
 		src="http://www.youtube.com/embed/?enablejsapi=1&origin=http://localhost:8881" frameborder="0">
 	</iframe>
   <div id="player-meta">
+    <h5>{{currentVideo.snippet.title}}</h5>
+    <p>{{currentVideo.snippet.description}}</p>
     <div class="btn btn-default btn-sm" ng-click="addToFavorites()">Add To Favorites</div>
   </div>
+  <div class="comments" ng-include="'src/templates/comments.html'" ng-controller="commentsController"></div>
 </div>
